@@ -6,7 +6,7 @@ using its official Linux release binaries.
 ## Run
 
 ```console
-nix run github:YOUR-GITHUB-USER/omp-flake
+nix run github:Oery/omp-flake
 ```
 
 From a local checkout:
@@ -21,7 +21,7 @@ Add this flake as an input:
 
 ```nix
 {
-  inputs.omp.url = "github:YOUR-GITHUB-USER/omp-flake";
+  inputs.omp.url = "github:Oery/omp-flake";
 }
 ```
 

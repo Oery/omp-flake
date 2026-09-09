@@ -29,6 +29,9 @@ stdenv.mkDerivation {
   };
 
   dontUnpack = true;
+  # Bun standalone executables store the bundled application in an appended
+  # payload. Stripping the ELF removes that payload and leaves a plain Bun CLI.
+  dontStrip = true;
   strictDeps = true;
 
   nativeBuildInputs = [ autoPatchelfHook ];
@@ -44,7 +47,11 @@ stdenv.mkDerivation {
   doInstallCheck = stdenv.buildPlatform.canExecute stdenv.hostPlatform;
   installCheckPhase = ''
     runHook preInstallCheck
-    "$out/bin/omp" --version >/dev/null
+    versionOutput=$("$out/bin/omp" --version)
+    if [ "$versionOutput" != "omp/$version" ]; then
+      echo "Expected omp/$version, got: $versionOutput" >&2
+      exit 1
+    fi
     runHook postInstallCheck
   '';
 
